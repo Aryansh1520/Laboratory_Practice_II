@@ -7,18 +7,15 @@ for i in range (nodes):
 #print(graph.keys())
 #print(graph['5'])
 
-def bfs(graph,node):#root node
-    visited = []
-    queue = []
-    visited.append(node)
-    queue.append(node)
-    while queue:
-        m = str(queue.pop(0))
-        print(m,end=" ")
-        for neighbor in graph[m]:
+def bfs(graph, node):
+    visited = set()
+    def _bfs(node):
+        visited.add(node)
+        print(node, end=" ")
+        for neighbor in graph[node]:
             if neighbor not in visited:
-                visited.append(neighbor)
-                queue.append(neighbor)
+                _bfs(neighbor)
+    _bfs(node)
 
 
 def dfs(graph,root):
