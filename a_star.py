@@ -1,49 +1,53 @@
-import math
+import sys
+visited = []
+vertices = []
+edges = []
+h = []
+cost=0
+goal=0
+n = int(input("Enter The number of vertices : "))
+for i in range(n):
+	vertices.append(str(input("Enter vertex : ")))
 
-class Node:
-    def __init__(self, x, y, cost):
-        self.x = x
-        self.y = y
-        self.cost = cost
+for i in range(n):
+    print(vertices[i],": Enter the cost of the connected edge in the order of vertices above\n If edge exists: Enter cost\n If no edge: Enter 0")
+    x=list(map(int,input().split()))
+    edges.append(x)
+print(edges)
 
-    def __lt__(self, other):
-        return self.cost < other.cost
 
-def heuristic(node, goal):
-    return abs(node.x - goal.x) + abs(node.y - goal.y)
+for i in range(0,n):
+	print(i+1,":",vertices[i],end="\n")
+goal = int(input("Enter Goal State : "))-1
+for i in range(0,n):
+	print("Enter Hueristic value for : ",vertices[i],": ")
+	h.append(int(input()))
+visited.append(vertices[0])
 
-def a_star(maze, start, goal):
-    open_set = set([start])
-    closed_set = set()
+def astar(i):
+    global goal     #for not fixed goal
+    global cost
 
-    while open_set:
-        current = min(open_set, key=lambda node: node.cost + heuristic(node, goal))
-        open_set.remove(current)
-        closed_set.add(current)
+    min = sys.maxsize
+    minj = 0
+    for j in range(6):
+        if i[j] != 0 and vertices[j] not in visited:
+            x = i[j] + h[j]                            # f(n) = g(n) + h(n)
+            
+            if x < min:
+                
+                min = x
+                minj = j
 
-        if current == goal:
-            return current.cost
+    
+    visited.append(vertices[minj])
+    cost = cost + i[minj]
+    
+    if minj != goal:   #// we can use this only if we also take H[] as user input as H is different for different goal
+        astar(edges[minj])
+    else:
+        print("Goal found.")
 
-        for neighbor in maze[current.x][current.y]:
-            if neighbor not in closed_set:
-                neighbor.cost = current.cost + neighbor.cost
-                open_set.add(neighbor)
-
-    return None
-
-def main():
-    maze = [[
-        [Node(0, 0, 0), Node(1, 0, 1), Node(2, 0, 2)],
-        [Node(0, 1, 3), Node(1, 1, 4), Node(2, 1, 5)],
-        [Node(0, 2, 6), Node(1, 2, 7), Node(2, 2, 8)],
-    ]]
-
-    start = Node(0, 0, 0)
-    goal = Node(2, 2, 0)
-
-    cost = a_star(maze, start, goal)
-
-    print("The cost of the shortest path is", cost)
-
-if __name__ == "__main__":
-    main()
+astar(edges[0])
+print(visited)
+print(cost)
