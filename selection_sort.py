@@ -11,7 +11,7 @@ def selection_sort(array):
     return array
 
 
-array = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+array = list(map(int,input("Enter Numbers seperated by space").split()))
 
 print("The original array is:", array)
 
