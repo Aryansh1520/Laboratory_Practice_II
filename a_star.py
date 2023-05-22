@@ -18,19 +18,20 @@ print(edges)
 
 for i in range(0,n):
 	print(i+1,":",vertices[i],end="\n")
+
 goal = int(input("Enter Goal State : "))-1
 for i in range(0,n):
 	print("Enter Hueristic value for : ",vertices[i],": ")
 	h.append(int(input()))
 visited.append(vertices[0])
 
-def astar(i):
+def astar(i,iterations):
     global goal     #for not fixed goal
     global cost
 
     min = sys.maxsize
     minj = 0
-    for j in range(6):
+    for j in range(iterations):
         if i[j] != 0 and vertices[j] not in visited:
             x = i[j] + h[j]                            # f(n) = g(n) + h(n)
             
@@ -44,10 +45,10 @@ def astar(i):
     cost = cost + i[minj]
     
     if minj != goal:   #// we can use this only if we also take H[] as user input as H is different for different goal
-        astar(edges[minj])
+        astar(edges[minj],iterations)
     else:
         print("Goal found.")
 
-astar(edges[0])
+astar(edges[0],n)
 print(visited)
 print(cost)
