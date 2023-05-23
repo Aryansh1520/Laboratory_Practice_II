@@ -1,5 +1,5 @@
 graph = {}
-graph_1 = {5: [3, 7], 3: [2, 4], 7: [8], 2: [], 4: [8], 8: []}
+#graph_1 = {5: [3, 7], 3: [2, 4], 7: [8], 2: [], 4: [8], 8: []}
 
 nodes = int(input("Enter Number Of Nodes : "))
 for i in range (nodes):
@@ -8,40 +8,36 @@ for i in range (nodes):
     graph[node] = child_node
 
 print(graph)
+visited = []
 
+def bfs(visited, Q):
+    if not Q:                 
+        return
+    node=Q.pop(0)  
+    print(node, end=' ')
+    for i in graph[node]:           
+        if i not in visited:
+            Q.append(i)
+            visited.append(i)
+    bfs(visited, Q)
 
-def bfs(graph, start):
-    visited = set()
-    queue = [start]
-
-    while queue:
-        node = queue.pop(0)
-
-        if node not in visited:
-            visited.add(node)
-            print(node, end=" ")
-
-            for neighbor in graph[node]:
-                if neighbor not in visited:
-                    queue.append(neighbor)
-
-    return visited
-
-
-
-def dfs(graph, start):
-    visited = set()
-    def _dfs(node):
-        visited.add(node)
-        print(node, end=" ")
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                _dfs(neighbor)
-    _dfs(start)
+def dfs(visited,s):
+    if not s:                 
+        return
+    node=s.pop(0)  
+    print(node, end=' ')
+    for i in graph[node]:           
+        if i not in visited:
+            s.append(i)
+            visited.append(i)
+        dfs(visited, s)
 
 print("BFS")
-bfs(graph_1,5)
-print("\n")
+q=[5]
+bfs(visited,q)
 
-print("DFS")
-dfs(graph_1,5)
+visited = []
+s=[5]
+print("\nDFS\n")
+dfs(visited,s)
+print("\n")
